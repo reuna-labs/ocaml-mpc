@@ -7,7 +7,7 @@
 (implicit_transitive_deps false)
 
 (source
- (github reuna147/ocaml-mpc))
+ (github reuna-labs/ocaml-mpc))
 
 (license ISC)
 
@@ -15,7 +15,7 @@
 
 (maintainers "Gil Bahat <bahat.gil@gmail.com>")
 
-(documentation "https://reuna147.github.io/ocaml-mpc/")
+(documentation "https://reuna-labs.github.io/ocaml-mpc/")
 
 (package
  (name mpc)

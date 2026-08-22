@@ -12,9 +12,9 @@ maintainer: ["Gil Bahat <bahat.gil@gmail.com>"]
 authors: ["Gil Bahat <bahat.gil@gmail.com>"]
 license: "ISC"
 tags: ["mpc" "threshold-signatures" "frost" "org:mirage"]
-homepage: "https://github.com/reuna147/ocaml-mpc"
-doc: "https://reuna147.github.io/ocaml-mpc/"
-bug-reports: "https://github.com/reuna147/ocaml-mpc/issues"
+homepage: "https://github.com/reuna-labs/ocaml-mpc"
+doc: "https://reuna-labs.github.io/ocaml-mpc/"
+bug-reports: "https://github.com/reuna-labs/ocaml-mpc/issues"
 depends: [
   "ocaml" {>= "4.14.0"}
   "dune" {>= "3.6" & >= "3.6"}
@@ -41,4 +41,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/reuna147/ocaml-mpc.git"
+dev-repo: "git+https://github.com/reuna-labs/ocaml-mpc.git"

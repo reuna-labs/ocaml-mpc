@@ -25,9 +25,9 @@ license: "ISC"
 tags: [
   "mpc" "threshold-signatures" "tss" "frost" "schnorr" "ed25519" "org:mirage"
 ]
-homepage: "https://github.com/reuna147/ocaml-mpc"
-doc: "https://reuna147.github.io/ocaml-mpc/"
-bug-reports: "https://github.com/reuna147/ocaml-mpc/issues"
+homepage: "https://github.com/reuna-labs/ocaml-mpc"
+doc: "https://reuna-labs.github.io/ocaml-mpc/"
+bug-reports: "https://github.com/reuna-labs/ocaml-mpc/issues"
 depends: [
   "ocaml" {>= "4.14.0"}
   "dune" {>= "3.6" & >= "3.6"}
@@ -56,7 +56,7 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/reuna147/ocaml-mpc.git"
+dev-repo: "git+https://github.com/reuna-labs/ocaml-mpc.git"
 # DEVELOPMENT ONLY -- delete this file before submitting to opam-repository.
 #
 # Mirage_crypto_ec.Ed25519.Primitive, and its scalar_*_into variants, are additions in
