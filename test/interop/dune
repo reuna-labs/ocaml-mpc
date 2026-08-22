@@ -1,0 +1,19 @@
+; Cross-implementation validation against ZcashFoundation/frost.
+;
+; Not wired into `dune runtest`: it needs a Rust toolchain and network access to fetch
+; crates, neither of which a normal build should assume. Run it deliberately with
+; test/interop/run.sh.
+
+(executable
+ (name interop)
+ (libraries
+  mpc
+  mpc.ed25519
+  mpc.secp256k1
+  mpc.frost
+  mirage-crypto-ec
+  mirage-crypto-rng
+  mirage-crypto-rng.unix
+  digestif
+  ohex
+  yojson))

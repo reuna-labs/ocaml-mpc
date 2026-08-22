@@ -1,0 +1,13 @@
+; The FROST(secp256k1, SHA-256) ciphersuite, over Mirage_crypto_ec's P256k1.Primitive:
+; fiat-crypto scalar arithmetic and ECCKiila's regular-wNAF ladder, both constant time.
+;
+; Deliberately NOT over mirage-crypto-blockchain's Secp256k1, which exposes the same
+; group but as plain zarith double-and-add with an explicit NOT CONSTANT TIME banner.
+; That one is fine for verifying public data and unusable for a secret key share.
+;
+; Like the Ed25519 suite, this pulls in no bignum: the scalar field is the curve's own.
+
+(library
+ (name mpc_secp256k1)
+ (public_name mpc.secp256k1)
+ (libraries mpc digestif eqaf mirage-crypto-ec))

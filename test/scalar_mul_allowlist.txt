@@ -1,0 +1,11 @@
+# Every permitted use of Element.scalar_mul in lib/, with the reason its scalar is
+# public. Element.scalar_mul is variable time; FROST tolerates that only because it is
+# never applied to a secret. This file is the enforcement of that claim: adding a call
+# site without adding a justified line here fails the build.
+#
+# Format: <file>:<line-content-substring>  # why the scalar is public
+#
+lib/mpc/shamir.ml       # Lagrange coefficient: derived from participant identifiers alone
+lib/mpc/vss.ml          # participant identifier, in Horner evaluation of a public commitment
+lib/frost/core.ml       # binding factor rho, challenge c, Lagrange lambda -- all public
+lib/frost/keygen.ml     # DKG proof-of-knowledge challenge c, recomputed from public data

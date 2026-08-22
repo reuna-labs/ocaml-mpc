@@ -1,0 +1,19 @@
+; The only package in the repository permitted to depend on unix. Keeping it in its
+; own package is what lets the protocol core and the Lwt transport cross-compile to a
+; Solo5 unikernel unchanged; CI enforces the boundary with a grep guard over lib/mpc,
+; lib/ed25519, lib/frost and lib/lwt.
+
+(library
+ (name mpc_unix)
+ (public_name mpc-unix)
+ (libraries
+  mpc
+  mpc-lwt
+  lwt
+  lwt.unix
+  unix
+  cstruct
+  mirage-flow
+  mirage-flow-unix
+  fmt
+  logs))

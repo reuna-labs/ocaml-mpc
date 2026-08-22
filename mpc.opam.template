@@ -1,0 +1,13 @@
+# DEVELOPMENT ONLY -- delete this file before submitting to opam-repository.
+#
+# Mirage_crypto_ec.Ed25519.Primitive, and its scalar_*_into variants, are additions in
+# the Reuna fork and are not yet upstream. Until they land, these pins let
+# `opam install --deps-only --with-test .` resolve. Pinned by commit, never by branch:
+# a moving branch would make a build unreproducible, and this is key-handling code.
+#
+# e6ed509 is on the fork's ec-into-and-x25519 branch. Repin once it reaches main.
+pin-depends: [
+  [ "mirage-crypto.2.4.0"     "git+https://github.com/reuna147/mirage-crypto.git#e6ed509" ]
+  [ "mirage-crypto-rng.2.4.0" "git+https://github.com/reuna147/mirage-crypto.git#e6ed509" ]
+  [ "mirage-crypto-ec.2.4.0"  "git+https://github.com/reuna147/mirage-crypto.git#e6ed509" ]
+]

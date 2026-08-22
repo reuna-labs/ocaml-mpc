@@ -1,0 +1,20 @@
+_build
+_opam
+*.install
+
+# mirage configure generates these in mirage-smoke/
+mirage-smoke/dune
+mirage-smoke/dune.build
+mirage-smoke/dune.config
+mirage-smoke/dune-project
+mirage-smoke/dune-workspace
+mirage-smoke/Makefile
+mirage-smoke/duniverse/
+mirage-smoke/dist/
+mirage-smoke/mirage/
+mirage-smoke/fstat_stub.c
+mirage-smoke/*.opam
+
+# Cargo build output from the Rust interop harness (test/interop/rust).
+# 150M+ of it; the harness is built on demand by test/interop/run.sh.
+target/

@@ -1,0 +1,25 @@
+; End-to-end over real sockets. Separate from the main suite because it is the only
+; test that touches unix, and because it binds ports: keeping it apart means the
+; unikernel-safe suite stays runnable in an environment with no networking at all.
+
+(test
+ (name test_mpc_unix)
+ (libraries
+  mpc
+  mpc.ed25519
+  mpc.frost
+  mpc-lwt
+  mpc-unix
+  mirage-flow
+  mirage-flow-unix
+  mirage-crypto
+  mirage-crypto-ec
+  mirage-crypto-rng
+  mirage-crypto-rng.unix
+  digestif
+  lwt
+  lwt.unix
+  unix
+  alcotest
+  alcotest-lwt
+  ohex))

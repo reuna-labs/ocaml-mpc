@@ -1,0 +1,12 @@
+; The protocol core: no I/O, no scheduler, no clock, no ambient randomness, no
+; unix. Every operation that needs entropy takes an Mpc.Rand.t; every operation
+; that needs time takes a Timeout input the driver injects. That is what lets
+; the same code drive a Unix process, a Solo5 unikernel, and a deterministic
+; in-memory simulator, and it is why mirage-crypto-rng is a test dependency
+; only. Deliberately free of zarith: nothing here needs a bignum.
+
+(library
+ (name mpc)
+ (public_name mpc)
+ (modules_without_implementation group)
+ (libraries digestif eqaf))

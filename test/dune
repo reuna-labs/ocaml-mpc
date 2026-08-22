@@ -1,0 +1,78 @@
+; The FROST vectors come from the CFRG's own reference implementation -- see
+; vectors/README.md -- so these are known-answer tests against the spec's
+; intermediates, not just self-consistency checks. The end-to-end tests verify
+; every aggregated signature with Mirage_crypto_ec.Ed25519.verify, an entirely
+; independent implementation of the verification equation.
+
+(test
+ (name test_mpc)
+ (libraries
+  mpc
+  mpc_ed25519
+  mpc_secp256k1
+  mpc_frost
+  mpc_sim
+  mirage-crypto-ec
+  mirage-crypto-blockchain
+  mirage-crypto-rng
+  digestif
+  fmt
+  alcotest
+  qcheck-core
+  qcheck-alcotest
+  ohex
+  yojson
+  str)
+ (deps
+  (glob_files vectors/*)
+  %{workspace_root}/docs/dkls23-specification-pin.md))
+
+; CI enforces the no-I/O rule with this guard and a Solo5 cross-build. It scans OCaml
+; sources only, and only for module-qualified uses, because "Unix" occurs legitimately
+; in prose.
+
+; The protocol core performs no I/O whatsoever, so it cross-compiles to a Solo5
+; unikernel unchanged.
+
+(rule
+ (alias runtest)
+ (deps
+  (source_tree %{workspace_root}/lib)
+  %{dep:no_io_guard.sh})
+ (action
+  (run
+   sh
+   %{dep:no_io_guard.sh}
+   core
+   %{workspace_root}/lib/mpc
+   %{workspace_root}/lib/ed25519
+   %{workspace_root}/lib/secp256k1
+   %{workspace_root}/lib/frost)))
+
+; The transport may use Lwt -- MirageOS has no Eio backend -- but not Unix: it is
+; functorised over Mirage_flow.S precisely so that it does not need one.
+
+(rule
+ (alias runtest)
+ (deps
+  (source_tree %{workspace_root}/lib)
+  %{dep:no_io_guard.sh})
+ (action
+  (run sh %{dep:no_io_guard.sh} lwt %{workspace_root}/lib/lwt)))
+
+; Element.scalar_mul is variable time. It is safe here only because every call site
+; passes a public scalar, which is a property of the call sites rather than of the
+; types -- so it is checked, not asserted.
+
+(rule
+ (alias runtest)
+ (deps
+  (source_tree %{workspace_root}/lib)
+  %{dep:scalar_mul_guard.sh}
+  %{dep:scalar_mul_allowlist.txt})
+ (action
+  (run
+   sh
+   %{dep:scalar_mul_guard.sh}
+   %{workspace_root}/lib
+   %{dep:scalar_mul_allowlist.txt})))

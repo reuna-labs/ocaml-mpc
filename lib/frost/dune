@@ -1,0 +1,7 @@
+; RFC 9591. Functorised over Mpc.Group.CIPHERSUITE, so it links against no
+; concrete curve: an application chooses the suite, and several may coexist.
+
+(library
+ (name mpc_frost)
+ (public_name mpc.frost)
+ (libraries mpc digestif eqaf))

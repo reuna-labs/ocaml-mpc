@@ -1,0 +1,19 @@
+; The timing harness is not part of `dune runtest`: it takes minutes, and on a
+; general-purpose machine with frequency scaling and preemption it is noisy enough that
+; a spurious failure would train people to ignore it. Run it deliberately:
+;
+;   dune exec test/timing/timing_ct.exe
+;
+; It is a negative test -- it can find leakage, not prove its absence -- and it reports
+; INCONCLUSIVE rather than success when its own positive control goes undetected.
+
+(executable
+ (name timing_ct)
+ (libraries
+  mpc
+  mpc.ed25519
+  mirage-crypto-rng
+  mirage-crypto-rng.unix
+  mtime
+  mtime.clock.os
+  eqaf))

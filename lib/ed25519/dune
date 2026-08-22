@@ -1,0 +1,14 @@
+; The FROST(Ed25519, SHA-512) ciphersuite, over Mirage_crypto_ec.Ed25519.
+; Primitive. Depends on mirage-crypto-ec alone -- no zarith, hence no GMP,
+; hence no duniverse vendoring for an Ed25519-only unikernel.
+;
+; Every secret-scalar operation here is constant time (sc_muladd,
+; x25519_ge_scalarmult_base). The variable-time routines
+; (ge_double_scalarmult_vartime, ge_frombytes_vartime) reach the protocol only
+; through Element.scalar_mul, Element.add and Element.deserialize, which FROST
+; applies to public data only; see the audit table in ed25519.mli.
+
+(library
+ (name mpc_ed25519)
+ (public_name mpc.ed25519)
+ (libraries mpc digestif eqaf mirage-crypto-ec))

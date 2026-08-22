@@ -1,0 +1,12 @@
+; The Lwt transport. Functorised over Mirage_flow.S rather than bound to a socket API,
+; so the same code runs over TCP, over vsock, or over TLS in a MirageOS/Solo5
+; unikernel. Nothing here may depend on unix -- that is mpc-unix's job, and only its
+; job.
+;
+; Lwt rather than Eio is a constraint, not a preference: MirageOS has no Eio backend,
+; so a unikernel-capable transport has to be Lwt-based.
+
+(library
+ (name mpc_lwt)
+ (public_name mpc-lwt)
+ (libraries mpc mpc.frost lwt cstruct mirage-flow mirage-crypto logs fmt))

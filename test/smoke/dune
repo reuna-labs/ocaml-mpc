@@ -1,0 +1,29 @@
+; Type-checks and runs the unikernel's body on the host.
+;
+; The file is copied from mirage-smoke/ rather than duplicated, so the code that boots
+; under Solo5 is the same code checked here. mirage-smoke/ itself is left pristine
+; because `mirage configure` generates its own dune there and would clobber a
+; hand-written one.
+;
+; This catches a type error or a broken check in seconds; it does not prove anything
+; about cross-compilation, which is what mirage-smoke/build.sh is for.
+
+(copy_files#
+ (files %{workspace_root}/mirage-smoke/unikernel.ml))
+
+(test
+ (name run_smoke)
+ (modules unikernel run_smoke)
+ (libraries
+  mpc
+  mpc.ed25519
+  mpc.secp256k1
+  mpc.frost
+  mpc-lwt
+  cstruct
+  mirage-crypto-ec
+  mirage-crypto-rng
+  mirage-crypto-rng.unix
+  mirage-crypto-rng-mirage
+  lwt
+  lwt.unix))

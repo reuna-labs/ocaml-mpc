@@ -1,0 +1,9 @@
+; `mirage configure` vendors an entire opam universe into mirage-smoke/duniverse/,
+; including dune's own blackbox test suite, whose dune files are deliberately
+; malformed. That directory is a build output of a different toolchain, not part of
+; this project, so the host build must not descend into it.
+;
+; data_only_dirs rather than vendored_dirs: the files stay readable, which is what
+; test/smoke/ needs in order to copy unikernel.ml and check it on the host.
+
+(data_only_dirs mirage-smoke)

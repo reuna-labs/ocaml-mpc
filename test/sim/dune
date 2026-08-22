@@ -1,0 +1,7 @@
+; The deterministic n-party simulator. One seed drives both the message schedule and
+; every party's randomness, so a failing property test reproduces exactly from the seed
+; it prints. Not installed.
+
+(library
+ (name mpc_sim)
+ (libraries mpc digestif))
