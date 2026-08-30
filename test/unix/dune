@@ -4,6 +4,7 @@
 
 (test
  (name test_mpc_unix)
+ (package mpc-unix)
  (libraries
   mpc
   mpc.ed25519

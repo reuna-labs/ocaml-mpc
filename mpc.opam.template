@@ -5,9 +5,13 @@
 # `opam install --deps-only --with-test .` resolve. Pinned by commit, never by branch:
 # a moving branch would make a build unreproducible, and this is key-handling code.
 #
-# e6ed509 is on the fork's ec-into-and-x25519 branch. Repin once it reaches main.
+# The immutable staging commit includes the Ed25519/X25519 APIs required here.
 pin-depends: [
-  [ "mirage-crypto.2.4.0"     "git+https://github.com/reuna147/mirage-crypto.git#e6ed509" ]
-  [ "mirage-crypto-rng.2.4.0" "git+https://github.com/reuna147/mirage-crypto.git#e6ed509" ]
-  [ "mirage-crypto-ec.2.4.0"  "git+https://github.com/reuna147/mirage-crypto.git#e6ed509" ]
+  [ "mirage-crypto.2.4.0"     "git+https://github.com/reuna-labs/mirage-crypto.git#23379bd" ]
+  [ "mirage-crypto-rng.2.4.0" "git+https://github.com/reuna-labs/mirage-crypto.git#23379bd" ]
+  [ "mirage-crypto-rng-mirage.2.4.0" "git+https://github.com/reuna-labs/mirage-crypto.git#23379bd" ]
+  [ "mirage-crypto-ec.2.4.0"  "git+https://github.com/reuna-labs/mirage-crypto.git#23379bd" ]
+  [ "mirage-crypto-blockchain-core.2.4.0" "git+https://github.com/reuna-labs/mirage-crypto.git#23379bd" ]
+  [ "mirage-crypto-blockchain.2.4.0" "git+https://github.com/reuna-labs/mirage-crypto.git#23379bd" ]
+  [ "digestif.1.4.0" "git+https://github.com/reuna-labs/digestif.git#6b1530c" ]
 ]

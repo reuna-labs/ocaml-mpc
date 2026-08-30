@@ -1,4 +1,4 @@
-## v0.1.0 (unreleased)
+## v0.1.0~alpha1 (unreleased)
 
 First release. FROST (RFC 9591) over the Ed25519 ciphersuite.
 

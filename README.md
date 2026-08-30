@@ -11,7 +11,7 @@ signing key never exists in any one place at any point in time** — not during 
 generation, not during signing, not in memory.
 
 ```
-opam pin add mpc git+https://github.com/reuna147/ocaml-mpc.git
+opam pin add mpc git+https://github.com/reuna-labs/ocaml-mpc.git
 ```
 
 ## Status

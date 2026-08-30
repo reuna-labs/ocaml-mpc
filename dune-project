@@ -2,6 +2,8 @@
 
 (name mpc)
 
+(version 0.1.0~alpha1)
+
 (generate_opam_files true)
 
 (implicit_transitive_deps false)
@@ -39,6 +41,7 @@
    (and
     :with-test
     (>= 2.1.0)))
+  (mirage-crypto-blockchain :with-test)
   (alcotest :with-test)
   (qcheck-core :with-test)
   (qcheck-alcotest :with-test)
@@ -72,6 +75,11 @@
    (>= 4.0.0))
   (mirage-crypto
    (>= 2.1.0))
+  (mirage-crypto-rng
+   (and
+    :with-test
+    (>= 2.1.0)))
+  (mirage-crypto-rng-mirage :with-test)
   logs
   fmt
   (alcotest :with-test)))
@@ -98,4 +106,9 @@
   (mirage-flow-unix
    (>= 4.0.0))
   logs
-  (alcotest :with-test)))
+  (alcotest :with-test)
+  (alcotest-lwt :with-test)
+  (ohex
+   (and
+    :with-test
+    (>= 0.2.0)))))

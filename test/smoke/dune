@@ -13,6 +13,7 @@
 
 (test
  (name run_smoke)
+ (package mpc-lwt)
  (modules unikernel run_smoke)
  (libraries
   mpc
