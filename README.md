@@ -10,9 +10,16 @@ two-round signing, and signature-share verification with identifiable abort. A g
 signing key never exists in any one place at any point in time** — not during key
 generation, not during signing, not in memory.
 
+## Install
+
+```sh
+opam repository add reuna https://github.com/reuna-labs/opam-repository.git
+opam update
+opam install mpc-unix.0.1.0~alpha1
 ```
-opam pin add mpc git+https://github.com/reuna-labs/ocaml-mpc.git
-```
+
+`mpc-unix` installs the pure FROST core, Lwt driver and Unix transport from the
+public `v0.1.0-alpha1` archive. No git pin is required.
 
 ## Status
 
@@ -23,7 +30,8 @@ a Solo5 unikernel. Threshold ECDSA is not here yet; see [CHANGES.md](CHANGES.md)
 
 This has not been audited. Read [What this does and does not
 guarantee](#what-this-does-and-does-not-guarantee) before using it to hold anything
-that matters.
+that matters, and see [SECURITY.md](SECURITY.md) for private reporting and the
+review boundary.
 
 ## What it looks like
 
