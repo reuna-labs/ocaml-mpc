@@ -1,0 +1,75 @@
+name: test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ocaml-compiler: ["4.14.2", "5.2.1"]
+    steps:
+      - uses: actions/checkout@v4
+
+      # opam-local-packages pins every local package, which also applies the
+      # pin-depends in the *.opam.template: the public reuna-labs/mirage-crypto
+      # and digestif forks at exact commits, which carry code no released opam
+      # package has yet. CI tests exactly the closure the opam files declare.
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          opam-local-packages: "*.opam"
+
+      # mpc itself needs no bignum, but the forked mirage-crypto-blockchain
+      # its tests use pulls zarith, whose native build needs GMP. A
+      # hash-verified GMP in a runner-temp prefix keeps that from needing root
+      # or a host package manager, the same as ocaml-tron and ocaml-cardano.
+      - name: Build the GMP prerequisite without host privileges
+        env:
+          GMP_VERSION: "6.3.0"
+          GMP_SHA256: a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898
+        run: |
+          archive="$RUNNER_TEMP/gmp-$GMP_VERSION.tar.xz"
+          source_dir="$(mktemp --directory "$RUNNER_TEMP/gmp-build.XXXXXX")"
+          gmp_prefix="$RUNNER_TEMP/ocaml-mpc-gmp-${{ matrix.ocaml-compiler }}"
+          curl --fail --location --retry 5 --retry-all-errors \
+            --connect-timeout 20 --output "$archive" \
+            "https://ftp.gnu.org/gnu/gmp/gmp-$GMP_VERSION.tar.xz"
+          echo "$GMP_SHA256  $archive" | sha256sum --check --strict
+          tar --extract --xz --file "$archive" --directory "$source_dir" \
+            --strip-components 1
+          cd "$source_dir"
+          ./configure --prefix="$gmp_prefix" --with-pic
+          make -j"$(nproc)"
+          make install
+          echo "CPATH=$gmp_prefix/include" >> "$GITHUB_ENV"
+          echo "LIBRARY_PATH=$gmp_prefix/lib" >> "$GITHUB_ENV"
+          echo "LD_LIBRARY_PATH=$gmp_prefix/lib" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$gmp_prefix/lib/pkgconfig" >> "$GITHUB_ENV"
+
+      # Everything else that is not on opam yet (sibling Web3 packages, the
+      # tagged fork releases) comes from the public overlay, as the README
+      # documents for a source checkout.
+      - name: Add the public Reuna overlay
+        run: opam repository add reuna https://github.com/reuna-labs/opam-repository.git
+
+      - run: opam install -y --assume-depexts --deps-only --with-test .
+
+      - run: opam exec -- dune build @install
+
+      - run: opam exec -- dune runtest
+
+      # Formatting is a repository check rather than a package dependency, so
+      # --deps-only does not install it. Keep this aligned with .ocamlformat.
+      - name: Formatting
+        run: opam install -y ocamlformat.0.28.1
+
+      - name: Formatting check
+        run: opam exec -- dune build @fmt
