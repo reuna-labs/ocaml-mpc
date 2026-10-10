@@ -9,8 +9,7 @@ set -eu
 root="${1:-lib}"
 allow="${2:-scalar_mul_allowlist.txt}"
 
-files=$(find "$root" -name '*.ml' \
-  | xargs grep -l 'scalar_mul[^_]' 2>/dev/null \
+files=$(find "$root" -name '*.ml' -exec grep -l 'scalar_mul[^_]' {} + 2>/dev/null \
   | while read -r f; do
       # A definition of scalar_mul is not a use of it.
       if grep -E '(El|C\.Element|Element)\.scalar_mul[^_]' "$f" >/dev/null 2>&1; then
@@ -21,7 +20,7 @@ files=$(find "$root" -name '*.ml' \
 status=0
 for f in $files; do
   base=$(printf '%s\n' "$f" | sed 's|^.*/lib/|lib/|')
-  if ! grep -q "^$base[[:space:]]" "$allow"; then
+  if ! grep -q "^${base}[[:space:]]" "$allow"; then
     echo "scalar_mul guard: $f uses Element.scalar_mul but is not on the allowlist." >&2
     echo "  Element.scalar_mul is NOT constant time. Add $base to $allow with the" >&2
     echo "  reason its scalar is public, or use scalar_mul_base." >&2

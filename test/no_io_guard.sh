@@ -26,7 +26,10 @@ esac
 
 status=0
 for root in "$@"; do
-  for dune in $(find "$root" -name dune); do
+  # A here-document rather than a pipe, so the loop runs in this shell and
+  # its status assignments survive it.
+  while IFS= read -r dune; do
+    [ -n "$dune" ] || continue
     # Take the (libraries ...) stanza, drop comment lines, split into words.
     deps=$(sed -e 's/;.*$//' "$dune" \
       | tr '\n' ' ' \
@@ -39,7 +42,9 @@ for root in "$@"; do
         status=1
       fi
     done
-  done
+  done <<EOF
+$(find "$root" -name dune)
+EOF
 done
 
 [ "$status" -eq 0 ] && echo "no-I/O guard passed ($mode: $*)"
