@@ -16,13 +16,15 @@ jobs:
       matrix:
         ocaml-compiler: ["4.14.2", "5.2.1"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
       # opam-local-packages pins every local package, which also applies the
       # pin-depends in the *.opam.template: the public reuna-labs/mirage-crypto
       # and digestif forks at exact commits, which carry code no released opam
       # package has yet. CI tests exactly the closure the opam files declare.
-      - uses: ocaml/setup-ocaml@v3
+      - uses: ocaml/setup-ocaml@93303b622b2522e4411e295f9e77411a24912ac7 # v3.9.0
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
           opam-local-packages: "*.opam"
@@ -49,10 +51,12 @@ jobs:
           ./configure --prefix="$gmp_prefix" --with-pic
           make -j"$(nproc)"
           make install
-          echo "CPATH=$gmp_prefix/include" >> "$GITHUB_ENV"
-          echo "LIBRARY_PATH=$gmp_prefix/lib" >> "$GITHUB_ENV"
-          echo "LD_LIBRARY_PATH=$gmp_prefix/lib" >> "$GITHUB_ENV"
-          echo "PKG_CONFIG_PATH=$gmp_prefix/lib/pkgconfig" >> "$GITHUB_ENV"
+          {
+            echo "CPATH=$gmp_prefix/include"
+            echo "LIBRARY_PATH=$gmp_prefix/lib"
+            echo "LD_LIBRARY_PATH=$gmp_prefix/lib"
+            echo "PKG_CONFIG_PATH=$gmp_prefix/lib/pkgconfig"
+          } >> "$GITHUB_ENV"
 
       # Everything else that is not on opam yet (sibling Web3 packages, the
       # tagged fork releases) comes from the public overlay, as the README
